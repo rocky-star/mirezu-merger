@@ -50,8 +50,7 @@ Then, to install, run the following command::
 Usage
 -----
 
-.. attention::
-   UNDER CONSTRUCTION
+For instructions, see `User's Manual (Chinese edition only) <https://mirezu-merger.projects.rocky-star.uk/manual.zh-cn.pdf>`__.
 
 
 License
