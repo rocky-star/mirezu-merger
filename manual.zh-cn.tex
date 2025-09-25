@@ -1,0 +1,300 @@
+\documentclass[a4paper,fontset=founder,punct=kaiming]{ctexart}
+
+\usepackage[a4paper,hmargin=1.25in,vmargin=1in]{geometry}
+\usepackage{fancyvrb}
+\usepackage[bookmarksnumbered=true]{hyperref}
+\renewcommand\_{\textunderscore\linebreak[1]}
+\newcommand{\productname}{Mirezu Merger}
+\title{\productname 用户指南}
+\author{Rocky☆Star}
+
+\begin{document}
+
+\maketitle
+
+\section{引言}
+\label{sec:intro}
+
+\productname 是一种用以合并由不同订阅服务提供的YAML配置文件的脚本。
+不同订阅服务所提供的YAML配置文件通常包含不同的节点、节点组和路由规则等。
+若您同时订阅了多项服务，又想同时使用它们的话，则不太容易。
+使用\texttt{proxy-providers}虽然可达到同时使用多项服务的目的，但却无法利用到各服务预先配置好的节点组，因此不太方便。
+因此，如果您想同时使用多项订阅服务，又想方便地利用各订阅服务提供的节点组，\productname 即可满足您的需求。
+
+\productname\ 的一般工作流程如下：
+\begin{enumerate}
+\item 加载\emph{程序配置}和\emph{模板}
+\item 从网络上获取每项订阅服务的\emph{YAML配置}，并：
+  \begin{enumerate}
+  \item 将其中的节点追加到\emph{模板}中；
+  \item 依\emph{程序配置}中的映射对节点组进行一对一或一对多的合并。
+  \end{enumerate}
+\item 读取每份\emph{自定义配置}，并：
+  \begin{enumerate}
+  \item 复制一份\emph{模板}，并将\emph{自定义配置}合入\emph{模板}的拷贝中；
+  \item 输出该拷贝到文件。
+  \end{enumerate}
+\end{enumerate}
+
+\section{术语}
+\label{sec:terms}
+
+下列与\productname 相关的术语会出现在本手册中：
+\begin{description}
+\item[程序配置] 用以控制\productname 工作的配置，以TOML格式书写。
+\item[YAML配置] 用以内核运行的配置，通常包含节点及节点组的信息、路由规则和DNS覆写规则等。
+  通常由订阅服务提供。
+\item[模板] 一份特殊的\emph{YAML配置}。
+  \productname 会从由订阅服务提供的\emph{YAML配置}中抽出节点和节点组信息，并注入\emph{模板}。
+\item[自定义配置] 不同的\emph{YAML配置}片段。
+  \productname 会把各个\emph{自定义配置}分别注入到\emph{模板}中，最终生成适用于不同种类设备的配置文件（PC、智能手机、家用路由器等）。
+\end{description}
+
+\section{使用\productname}
+\label{sec:usage}
+
+安装完毕后，您即可在命令行中使用\productname 。
+调用\productname 的一般语法如下：
+\begin{verbatim}
+mirezu-merger [<其它选项>}] [-o <输出目录>}] <程序配置> <自定义配置目录>
+\end{verbatim}
+
+以下是对各个选项与参数的说明：
+\begin{description}
+\item[\textless 程序配置\textgreater]
+  \emph{程序配置}TOML文件的位置。
+\item[\textless 自定义配置目录\textgreater]
+  各个\emph{自定义配置}所在的目录。
+  \emph{自定义配置}的文件名应以 \emph{.yaml}作为扩展名。
+\item[\texttt{-o} \textless 输出目录\textgreater , \texttt{--outdir=}\textless 输出目录\textgreater]
+  输出文件应被放置的目录，默认值为当前目录。
+\item[\texttt{--locale=}\textless 区域设置\textgreater]
+  \productname 支持以多种语言显示提示信息。
+  默认情况下，您系统当前所使用的语言将被启用（如果有对应翻译）。
+  通过此选项即可指定使用哪种语言，例如 \texttt{--locale=zh\_CN}将以简体中文显示提示信息。
+\item[\texttt{-v}, \texttt{--verbose}]
+  此选项能让\productname 显示更多提示信息。
+  默认情况下，只有\emph{警告}级别的信息会被显示。
+  此选项被指定的次数越多，日志级别也越加被提升，显示的信息也会越来越多。
+  例如 \texttt{-v}将会显示\emph{信息}级别的信息，而 \texttt{-vv}则会显示\emph{调试}级别的信息。
+\end{description}
+
+\section{编写程序配置}
+\label{sec:progconf}
+
+\productname\emph{程序配置}通常由三个部分组成：
+位于顶端的全局配置节，位于\texttt{[proxy]}节中的代理配置节，以及位于\texttt{[subscriptions]}节中的订阅服务配置节。
+下面将分别介绍。
+
+\subsection{全局配置节}
+\label{sec:globalconf}
+
+全局配置节的一般形式如下：
+\begin{verbatim}
+template_file = "template.yaml"
+providers_file = "proxy-providers.yaml"
+denied_keywords = [ "剩余流量", "到期时间" ]
+user_agent = "clash"
+\end{verbatim}
+
+下面是对各项配置的说明：
+\begin{description}
+\item[template\_file] 指定\emph{模板}文件的位置。
+  此处指定的文件名与\emph{程序配置}文件所在的目录是相对的。
+  即：如果\emph{程序配置}文件位于\emph{foo/config.toml}，而template\_file被指定为\emph{template.yaml}，则\productname 会去读取\emph{foo/template.yaml}。
+\item[providers\_file（可选）] 指定此选项将在输出目录中以给定文件名产生proxy-providers文件\footnote{\url{https://wiki.metacubex.one/config/proxy-providers/content/}}。
+  该文件为YAML格式，内容则为所有指定订阅服务中被筛选出的所有节点。
+\item[denied\_keywords（可选）] 此选项可指定一个数组，其中包含用以筛除节点的关键词。
+  此选项可用于筛除订阅服务的配置文件中用以提示各类信息（如最新网址、剩余流量等）的无用节点。
+\item[user\_agent（可选）] 指定此选项将在HTTP请求中采用您选定的用户代理（user agent）字符串。
+  此选项可应对某些限定特定用户代理的订阅服务。
+  如果不指定，默认的用户代理字符串将与Clash Verge Rev相似。
+\end{description}
+
+\subsection{代理配置节}
+\label{sec:proxyconf}
+
+\productname 为HTTP请求支持两种代理形式：标准代理和“自定义URL”代理。
+
+\subsubsection{标准代理}
+\label{sec:stdproxy}
+
+标准代理的一般形式如下：
+\begin{verbatim}
+[proxy]
+type = "standard"
+host = "proxy.example.com:8000"
+protocol = "http"
+\end{verbatim}
+
+下面是对标准代理配置中各项配置的说明：
+\begin{description}
+\item[type] 指定代理的类型。
+  对标准代理，固定为standard。
+\item[host] 代理的主机名和端口号。
+\item[protocol（可选）] 代理的协议类型，默认为http。
+  不支持SOCKS4/SOCKS5协议。
+\end{description}
+
+\subsubsection{“自定义URL”代理}
+\label{sec:urlproxy}
+
+“自定义URL”代理的一般形式如下：
+\begin{verbatim}
+[proxy]
+type = "url"
+url = "https://proxy.example.com/proxy?url={url!q}&ua={ua!q}"
+\end{verbatim}
+
+下面是对“自定义URL”代理中各项配置的说明：
+\begin{description}
+\item[type] 指定代理的类型。
+  对“自定义URL”代理，固定为url。
+\item[url] 要重写到的URL模板。
+  在此模板中，\productname 会使用与Python str.format()\footnote{\url{https://docs.python.org/zh-cn/3/library/stdtypes.html\#str.format}}相似的语法来注入参数。
+  两个参数会被注入：url，即原始URL，以及ua，即用户代理字符串。
+  \productname 对格式化方法的扩展在于，除 \texttt{!s}（即str()）、\texttt{!r}（即repr()）和 \texttt{!a}（即ascii()）外，还支持 \texttt{!q}。
+  \texttt{!q}会把字符串进行URL转义。
+  因此，若以\verb|foo{0!q}baz|作为模板，将“你好”注入其中，则会得到\texttt{foo\%E4\%BD\%A0\%E5\%A5\%BDbaz}。
+\end{description}
+
+\subsection{订阅服务配置节}
+\label{sec:subconf}
+
+订阅服务配置节的一般形式如下：
+\begin{verbatim}
+[subscriptions.foo]
+url = "https://sub.example.com/config.yaml?token=foo"
+prefix = "sub-"
+suffix = "-foo"
+proxy_required = True
+mappings = [
+  { source = "自动选择", targets = "" },
+  { source = "ChatGPT", targets = [ "", "Anthropic" ] },
+]
+
+[subscriptions.bar]
+url = "https://baz.example.com/sub.yaml?pw=bar"
+
+[[subscriptions.bar]]
+source = "流媒体"
+targets = [ "B站港澳台", "动画疯" ]
+allowed_keywords = [ "台湾" ]
+\end{verbatim}
+请注意，\texttt{[subscriptions]}节可包含多份订阅服务配置，并以点分隔键的形式写出。
+
+下面是对各项配置的说明：
+\begin{description}
+\item[url] 订阅服务的\emph{YAML配置}的URL。
+\item[prefix和suffix（可选）] 若指定了prefix和/或suffix，则它们会被拼接到节点名上。
+  最终形成的节点名为“prefix + 原始节点名 + suffix”。
+  例如，若prefix为\texttt{sub-}，suffix为 \texttt{-foo}，而节点名为“香港1”，则最终形成的节点名则为\texttt{sub-香港1-foo}。
+\item[proxy\_required（可选）] 设置此项为true则将使\productname 在请求此订阅服务的配置文件时启用于代理配置节配置的网络代理。
+\item[mappings] 包含各项节点组映射配置，有关映射配置的内容将在下一节讲述。
+  请注意，示例配置同时展示了映射配置的两种形式：\emph{静态数组嵌套内联表}以及\emph{表数组}。
+  若您的映射配置较简单、简短，可采用静态数组嵌套内联表的形式（即\texttt{mappings = \{ \ldots{} \}}）。
+  但由于TOML不允许在内联表中换行，因此编写较长的映射时不太方便。
+  此时可选用表数组形式（即“双重方括号”形式）。
+  但这两种形式不可混用。
+\end{description}
+
+\subsection{节点组映射配置}
+\label{sec:groupmap}
+
+下面是对节点组映射中的各项配置的说明：
+\begin{description}
+\item[source] 源节点组的名称（即订阅服务的\emph{YAML配置}中proxy-groups项的name键）。
+  可以有多对源节点组相同的映射（既可一对一，也可一对多）。
+\item[targets] 目的节点组的名称（即\emph{模板}中proxy-groups项的name键）。
+  若其值为单个字符串，则效果与包含单个值的数组相同。
+  若其值或数组中元素的值为空字符串（\verb|""|），则表示其名称与source相同。
+\item[allowed\_keywords（可选）] 此选项可指定一个包含关键词的数组。
+  若指定，则在source指定的节点组中，只有与这些关键词匹配的节点（即\emph{YAML配置}中proxy-groups项的proxies键）才能被加入到targets指定的节点组中。
+  若全局配置节中的denied\_key\-words配置也被指定，此选项的优先级高于它。
+  因此，若节点无法被此选项中的关键词匹配，则会被抛弃。
+  只有与此选项中的关键词匹配的节点才会进一步与denied\_key\-words匹配。
+\end{description}
+
+\section{编写模板与自定义配置}
+\label{sec:template}
+
+\emph{模板}的格式与典型的内核\emph{YAML配置}相同。
+唯一需注意的是节点和节点组会被合入其中（即proxies项和proxy-groups项的name键中）。
+因此，在编写\emph{模板}时应考虑到这一点。
+
+\emph{自定义配置}的合入方法有所不同。
+在\productname 当前的实现中，\emph{自定义配置}支持两种合入策略：
+\begin{itemize}
+\item 对\emph{顶层}的YAML关联数组键，\emph{自定义配置}中键的值会覆盖掉\emph{模板}中对应键的值。
+  如果\emph{模板}中不存在对应键，一个新关联数组会被插入，然后\emph{自定义配置}中的值会被合入。
+\item 对\emph{顶层}的YAML数组键，\emph{自定义配置}中键的元素会被追加到\emph{模板}中对应键的数组中。
+  如果\emph{模板}中不存在对应键，一个新数组会被插入，然后\emph{自定义配置}中的值会被追加上去。
+\end{itemize}
+\productname 当前不处理其它的顶层键类型，也不递归地处理嵌套键。
+
+下面展示了一种可能的\emph{模板}、\emph{自定义配置}和最终的输出：
+
+\noindent\medskip
+\begin{SaveVerbatim}{ExampleTemplate}
+car:
+  max_speed: 80
+  color: green
+
+fruits:
+- apple
+- banana
+\end{SaveVerbatim}
+\begin{SaveVerbatim}{ExampleProfile}
+car:
+  max_speed: 120
+  glass_color: blue
+
+fruits:
+- banana
+- grape
+- orange
+\end{SaveVerbatim}
+\begin{SaveVerbatim}{ExampleOutput}
+car:
+  max_speed: 120
+  color: green
+  glass_color: blue
+
+fruits:
+- apple
+- banana
+- banana
+- grape
+- orange
+\end{SaveVerbatim}
+\fbox{
+  \begin{minipage}[t][46ex][t]{0.29\linewidth}
+    \smallskip
+    模板：
+    \UseVerbatim{ExampleTemplate}
+  \end{minipage}
+}
+\hspace{\fill}\fbox{
+  \begin{minipage}[t][46ex][t]{0.29\linewidth}
+    \smallskip
+    自定义配置：
+    \UseVerbatim{ExampleProfile}
+  \end{minipage}
+}
+\hspace{\fill}\fbox{
+  \begin{minipage}[t][46ex][t]{0.29\linewidth}
+    \smallskip
+    输出结果：
+    \UseVerbatim{ExampleOutput}
+  \end{minipage}
+}
+
+\smallskip
+请注意最终输出中的car键被更新了，而fruits键则被追加了元素。
+此追加过程是不进行去重的。
+
+\end{document}
+%%% Local Variables:
+%%% mode: japanese-LaTeX
+%%% TeX-master: t
+%%% End:
