@@ -1,0 +1,50 @@
+[build-system]
+requires = [
+  "hatchling >= 1.26",
+  "typing-extensions >= 4.15, < 5",
+  "babel",
+]
+build-backend = "hatchling.build"
+
+[project]
+name = "mirezu-merger"
+dynamic = [ "version" ]
+dependencies = [
+  "ruamel.yaml",
+  "typing-extensions >= 4.15, < 5",
+]
+requires-python = ">= 3.10"
+authors = [ { name = "Rocky☆Star", email = "rocky-star22@outlook.com" } ]
+description = "A script for merging of YAML configuration files"
+readme = "README.rst"
+license = "Apache-2.0"
+license-files = [ "LICENSE.txt" ]
+classifiers = [ "Private :: Do Not Upload" ]
+
+[project.urls]
+Repository = "https://github.com/rocky-star/mirezu-merger"
+Issues = "https://github.com/rocky-star/mirezu-merger/issues"
+
+[project.scripts]
+mirezu-merger = "mirezu_merger:main"
+
+[dependency-groups]
+dev = [
+  "isort",
+]
+
+[tool.hatch.version]
+path = "mirezu_merger/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+artifacts = [ "*.mo" ]
+
+[tool.hatch.build.hooks.custom]
+
+[tool.pyright]
+pythonVersion = "3.10"
+pythonPlatform = "All"
+reportUnusedCallResult = "none"
+
+[tool.ruff]
+builtins = [ "_", "ngettext" ]
