@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mirezu Merger 0.1\n"
 "Report-Msgid-Bugs-To: https://github.com/rocky-star/mirezu-merger/issues\n"
-"POT-Creation-Date: 2025-09-25 17:22+0800\n"
-"PO-Revision-Date: 2025-09-25 17:22+0800\n"
+"POT-Creation-Date: 2025-09-26 16:43+0800\n"
+"PO-Revision-Date: 2025-09-26 16:49+0800\n"
 "Last-Translator: Rocky☆Star <rocky-star22@outlook.com>\n"
 "Language-Team: \n"
 "Language: zh_CN\n"
@@ -80,7 +80,7 @@ msgstr "尚未处理订阅 %(sub)s 中的这些节点组: %(groups)r"
 
 #: mirezu_merger\__init__.py:214
 msgid "Please consider update your configuration"
-msgstr "请考虑更新您的配置"
+msgstr "请考虑更新您的程序配置"
 
 #: mirezu_merger\__init__.py:229
 #, python-format
@@ -122,11 +122,11 @@ msgstr "合并由订阅服务提供的 YAML 配置文件。"
 
 #: mirezu_merger\__init__.py:311
 msgid "the configuration file"
-msgstr "配置文件"
+msgstr "程序配置文件"
 
 #: mirezu_merger\__init__.py:312
 msgid "the profile directory"
-msgstr ""
+msgstr "自定义配置目录"
 
 #: mirezu_merger\__init__.py:316
 msgid "the output directory"
@@ -143,22 +143,22 @@ msgstr "增加日志级别，对调试有用"
 #: mirezu_merger\__init__.py:333
 #, python-format
 msgid "Loading the configuration from %s"
-msgstr "正在从 %s 加载配置"
+msgstr "正在从 %s 加载程序配置"
 
 #: mirezu_merger\__init__.py:339
 #, python-format
 msgid "Failed to read the configuration from %s"
-msgstr "从 %s 读取配置时出错"
+msgstr "从 %s 读取程序配置时出错"
 
 #: mirezu_merger\__init__.py:343
 #, python-format
 msgid "Failed to parse the configuration from %s"
-msgstr "从 %s 解析配置时出错"
+msgstr "从 %s 解析程序配置时出错"
 
 #: mirezu_merger\__init__.py:346
 #, python-format
 msgid "Successfully loaded the configuration from %s"
-msgstr "成功从 %s 加载配置"
+msgstr "成功从 %s 加载程序配置"
 
 #: mirezu_merger\__init__.py:349
 #, python-format
@@ -175,21 +175,31 @@ msgstr "从 %s 读取模板时出错"
 msgid "Successfully loaded the template from %s"
 msgstr "成功从 %s 加载模板"
 
-#: mirezu_merger\__init__.py:362
+#: mirezu_merger\__init__.py:363
+#, python-format
+msgid "Writing the proxy-providers.yaml to %s"
+msgstr "正在向 %s 写入 proxy-providers.yaml"
+
+#: mirezu_merger\__init__.py:369
+#, python-format
+msgid "Failed to write the proxy-providers.yaml to %s"
+msgstr "写入 proxy-providers.yaml 到 %s 时出错"
+
+#: mirezu_merger\__init__.py:373
 #, python-format
 msgid "Applying the patch %s"
 msgstr "正在应用补丁 %s"
 
-#: mirezu_merger\__init__.py:366
+#: mirezu_merger\__init__.py:377
 #, python-format
 msgid "Failed to read profile %s"
-msgstr ""
+msgstr "从 %s 读取自定义配置时出错"
 
-#: mirezu_merger\__init__.py:370
+#: mirezu_merger\__init__.py:381
 msgid "Writing the corresponding output"
 msgstr "正在写入到对应输出"
 
-#: mirezu_merger\__init__.py:374
+#: mirezu_merger\__init__.py:387
 #, python-format
 msgid "Failed to write the output of patch %s"
 msgstr "写入补丁 %s 的输出时出错"

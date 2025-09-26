@@ -358,6 +358,17 @@ def main(argv: Sequence[str] | None = None) -> None:
                 template_file_name)
 
     retrieve_and_apply_subscriptions(config, template)
+    if 'providers_file' in config:
+        providers_file_name = args.outdir / config['providers_file']
+        logger.info(_('Writing the proxy-providers.yaml to %s'),
+                    providers_file_name)
+        try:
+            with open(providers_file_name, 'w', encoding='utf_8') as providers_file:
+                yaml.dump({'proxies': template['proxies']}, providers_file)
+        except OSError:
+            logger.exception(_('Failed to write the proxy-providers.yaml to %s'),
+                             providers_file_name)
+            sys.exit(EXIT_FAILURE)
     for profile_file_name in args.profiles.glob('*.yaml'):
         logger.info(_('Applying the patch %s'), profile_file_name)
         try:
