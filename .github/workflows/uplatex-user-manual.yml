@@ -42,16 +42,16 @@ jobs:
         env:
           FONTS_DIR: /usr/local/share/texmf/fonts/truetype/founder/ctex
         run: |
-          mkdir -p $FONTS_DIR
-          curl -LO --output-dir $FONTS_DIR https://file.luxing.im/FZFSK.TTF
-          curl -LO --output-dir $FONTS_DIR https://file.luxing.im/FZHTK.TTF
-          curl -LO --output-dir $FONTS_DIR https://file.luxing.im/FZKTK.TTF
-          curl -LO --output-dir $FONTS_DIR https://file.luxing.im/FZLSK.TTF
-          curl -LO --output-dir $FONTS_DIR https://file.luxing.im/FZSSK.TTF
-          curl -LO --output-dir $FONTS_DIR https://file.luxing.im/FZXBSK.TTF
-          curl -LO --output-dir $FONTS_DIR https://file.luxing.im/FZXH1K.TTF
-          curl -LO --output-dir $FONTS_DIR http://d.xiazaiziti.com/fonts/fangzhengfonts/FZY1K.TTF
-          curl -LO --output-dir $FONTS_DIR http://d.xiazaiziti.com/fonts/fangzhengfonts/FZY3K.TTF
+          sudo mkdir -p $FONTS_DIR
+          sudo curl -LO --output-dir $FONTS_DIR https://file.luxing.im/FZFSK.TTF
+          sudo curl -LO --output-dir $FONTS_DIR https://file.luxing.im/FZHTK.TTF
+          sudo curl -LO --output-dir $FONTS_DIR https://file.luxing.im/FZKTK.TTF
+          sudo curl -LO --output-dir $FONTS_DIR https://file.luxing.im/FZLSK.TTF
+          sudo curl -LO --output-dir $FONTS_DIR https://file.luxing.im/FZSSK.TTF
+          sudo curl -LO --output-dir $FONTS_DIR https://file.luxing.im/FZXBSK.TTF
+          sudo curl -LO --output-dir $FONTS_DIR https://file.luxing.im/FZXH1K.TTF
+          sudo curl -LO --output-dir $FONTS_DIR http://d.xiazaiziti.com/fonts/fangzhengfonts/FZY1K.TTF
+          sudo curl -LO --output-dir $FONTS_DIR http://d.xiazaiziti.com/fonts/fangzhengfonts/FZY3K.TTF
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
