@@ -31,6 +31,7 @@ jobs:
         with:
           packages: texlive texlive-lang-chinese texlive-lang-japanese
           version: 1.0
+          execute_install_scripts: true
       - name: Cache TeX fonts
         id: cache-fonts
         uses: actions/cache@v4
@@ -57,7 +58,7 @@ jobs:
         uses: actions/configure-pages@v5
       - name: Build with upLaTeX and Dvipdfmx
         run: |
-          mktexlsr
+          sudo mktexlsr
           uplatex docs/manual.zh-cn.tex
           uplatex docs/manual.zh-cn.tex
           dvipdfmx docs/manual.zh-cn.dvi
