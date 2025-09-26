@@ -59,7 +59,9 @@ jobs:
       - name: Build with upLaTeX and Dvipdfmx
         run: |
           export PATH="${HOME}/texlive/bin/x86_64-linux:${PATH}"
+          export TEXMFHOME=~/texmf
           mktexlsr
+          mktexlsr $TEXMFHOME
           cd docs
           uplatex manual.zh-cn.tex
           uplatex manual.zh-cn.tex
