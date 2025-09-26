@@ -51,7 +51,7 @@ Mirezu Merger 是一种能帮助您合并由不同订阅提供的 YAML 配置文
 用法
 ----
 
-请阅读\ `用户手册 <https://mirezu-merger.projects.rocky-star.uk/manual.zh-cn.pdf>`__\ 以了解用法。
+请阅读\ `用户手册 <https://rocky-star.github.io/mirezu-merger/manual.zh-cn.pdf>`__\ 以了解用法。
 
 
 许可证

@@ -50,7 +50,7 @@ Then, to install, run the following command::
 Usage
 -----
 
-For instructions, see `User's Manual (Chinese edition only) <https://mirezu-merger.projects.rocky-star.uk/manual.zh-cn.pdf>`__.
+For instructions, see `User's Manual (Chinese edition only) <https://rocky-star.github.io/mirezu-merger/manual.zh-cn.pdf>`__.
 
 
 License
