@@ -32,7 +32,7 @@ jobs:
           packages: texlive texlive-lang-chinese texlive-lang-japanese
           version: 1.0
       - name: Run installation scripts of packages via APT
-        run: apt install texlive texlive-lang-chinese texlive-lang-japanese
+        run: sudo apt-get install texlive texlive-lang-chinese texlive-lang-japanese
       - name: Cache TeX fonts
         id: cache-fonts
         uses: actions/cache@v4
