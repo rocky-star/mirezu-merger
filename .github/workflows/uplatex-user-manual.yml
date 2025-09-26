@@ -60,15 +60,16 @@ jobs:
         run: |
           export PATH="${HOME}/texlive/bin/x86_64-linux:${PATH}"
           mktexlsr
-          uplatex docs/manual.zh-cn.tex
-          uplatex docs/manual.zh-cn.tex
-          dvipdfmx docs/manual.zh-cn.dvi
-          mkdir docs-build
-          mv docs/manual.zh-cn.pdf docs-build
+          cd docs
+          uplatex manual.zh-cn.tex
+          uplatex manual.zh-cn.tex
+          dvipdfmx manual.zh-cn.dvi
+          mkdir build
+          mv manual.zh-cn.pdf build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: docs-build
+          path: docs/build
 
   # Deployment job
   deploy:
