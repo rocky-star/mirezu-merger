@@ -36,12 +36,12 @@ jobs:
         id: cache-fonts
         uses: actions/cache@v4
         with:
-          path: /usr/local/texlive/texmf-local/fonts
+          path: ~/texmf/fonts
           key: founder-ctex-fonts
       - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
         name: Install fonts
         env:
-          FONTS_DIR: /usr/local/texlive/texmf-local/fonts/truetype/founder/ctex
+          FONTS_DIR: ~/texmf/fonts/truetype/founder/ctex
         run: |
           sudo mkdir -p $FONTS_DIR
           sudo curl -LO --output-dir $FONTS_DIR https://file.luxing.im/FZFSK.TTF
@@ -58,7 +58,8 @@ jobs:
         uses: actions/configure-pages@v5
       - name: Build with upLaTeX and Dvipdfmx
         run: |
-          sudo mktexlsr
+          export PATH="${HOME}/texlive/bin/x86_64-linux:${PATH}"
+          mktexlsr
           uplatex docs/manual.zh-cn.tex
           uplatex docs/manual.zh-cn.tex
           dvipdfmx docs/manual.zh-cn.dvi
