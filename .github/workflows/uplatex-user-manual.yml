@@ -25,19 +25,23 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout the repository
+        uses: actions/checkout@v4
       - name: Install TeX Live
-        run: sudo apt-get install texlive texlive-lang-chinese texlive-lang-japanese
+        uses: zauguin/install-texlive@v4
+        with:
+          packages: >
+            scheme-basic uplatex ctex geometry fancyvrb hyperref
       - name: Cache TeX fonts
         id: cache-fonts
         uses: actions/cache@v4
         with:
-          path: /usr/local/share/texmf/fonts
+          path: /usr/local/texlive/texmf-local/fonts
           key: founder-ctex-fonts
       - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
         name: Install fonts
         env:
-          FONTS_DIR: /usr/local/share/texmf/fonts/truetype/founder/ctex
+          FONTS_DIR: /usr/local/texlive/texmf-local/fonts/truetype/founder/ctex
         run: |
           sudo mkdir -p $FONTS_DIR
           sudo curl -LO --output-dir $FONTS_DIR https://file.luxing.im/FZFSK.TTF
@@ -47,8 +51,8 @@ jobs:
           sudo curl -LO --output-dir $FONTS_DIR https://file.luxing.im/FZSSK.TTF
           sudo curl -LO --output-dir $FONTS_DIR https://file.luxing.im/FZXBSK.TTF
           sudo curl -LO --output-dir $FONTS_DIR https://file.luxing.im/FZXH1K.TTF
-          sudo curl -LO --output-dir $FONTS_DIR https://font.taofont.com/fonts/fangzhengfonts/FZY1K.TTF
-          sudo curl -LO --output-dir $FONTS_DIR https://font.taofont.com/fonts/fangzhengfonts/FZY3K.TTF
+          sudo curl -LO --output-dir $FONTS_DIR http://d.xiazaiziti.com/fonts/fangzhengfonts/FZY1K.TTF
+          sudo curl -LO --output-dir $FONTS_DIR http://d.xiazaiziti.com/fonts/fangzhengfonts/FZY3K.TTF
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
