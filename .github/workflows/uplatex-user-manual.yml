@@ -36,12 +36,12 @@ jobs:
         id: cache-fonts
         uses: actions/cache@v4
         with:
-          path: ~/texmf/fonts
+          path: /home/runner/texmf/fonts
           key: founder-ctex-fonts
       - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
         name: Install fonts
         env:
-          FONTS_DIR: ~/texmf/fonts/truetype/founder/ctex
+          FONTS_DIR: /home/runner/texmf/fonts/truetype/founder/ctex
         run: |
           sudo mkdir -p $FONTS_DIR
           sudo curl -LO --output-dir $FONTS_DIR https://file.luxing.im/FZFSK.TTF
@@ -61,7 +61,6 @@ jobs:
           export PATH="${HOME}/texlive/bin/x86_64-linux:${PATH}"
           export TEXMFHOME=~/texmf
           mktexlsr
-          mktexlsr $TEXMFHOME
           cd docs
           uplatex manual.zh-cn.tex
           uplatex manual.zh-cn.tex
