@@ -55,9 +55,9 @@
 
 安装完毕后，您即可在命令行中使用\productname 。
 调用\productname 的一般语法如下：
-\begin{verbatim}
+\begin{Verbatim}
 mirezu-merger [<其它选项>] [-o <输出目录>] <程序配置> <自定义配置目录>
-\end{verbatim}
+\end{Verbatim}
 
 以下是对各个选项与参数的说明：
 \begin{description}
@@ -90,12 +90,12 @@ mirezu-merger [<其它选项>] [-o <输出目录>] <程序配置> <自定义配�
 \label{sec:globalconf}
 
 全局配置节的一般形式如下：
-\begin{verbatim}
+\begin{Verbatim}
 template_file = "template.yaml"
 providers_file = "proxy-providers.yaml"
 denied_keywords = [ "剩余流量", "到期时间" ]
 user_agent = "clash"
-\end{verbatim}
+\end{Verbatim}
 
 下面是对各项配置的说明：
 \begin{description}
@@ -120,12 +120,12 @@ user_agent = "clash"
 \label{sec:stdproxy}
 
 标准代理的一般形式如下：
-\begin{verbatim}
+\begin{Verbatim}
 [proxy]
 type = "standard"
 host = "proxy.example.com:8000"
 protocol = "http"
-\end{verbatim}
+\end{Verbatim}
 
 下面是对标准代理配置中各项配置的说明：
 \begin{description}
@@ -140,11 +140,11 @@ protocol = "http"
 \label{sec:urlproxy}
 
 “自定义URL”代理的一般形式如下：
-\begin{verbatim}
+\begin{Verbatim}
 [proxy]
 type = "url"
 url = "https://proxy.example.com/proxy?url={url!q}&ua={ua!q}"
-\end{verbatim}
+\end{Verbatim}
 
 下面是对“自定义URL”代理中各项配置的说明：
 \begin{description}
@@ -155,14 +155,14 @@ url = "https://proxy.example.com/proxy?url={url!q}&ua={ua!q}"
   两个参数会被注入：url，即原始URL，以及ua，即用户代理字符串。
   \productname 对格式化方法的扩展在于，除 \texttt{!s}（即str()）、\texttt{!r}（即repr()）和 \texttt{!a}（即ascii()）外，还支持 \texttt{!q}。
   \texttt{!q}会把字符串进行URL转义。
-  因此，若以\verb|foo{0!q}baz|作为模板，将“你好”注入其中，则会得到\texttt{foo\%E4\%BD\%A0\%E5\%A5\%BDbaz}。
+  因此，若以\Verb|foo{0!q}baz|作为模板，将“你好”注入其中，则会得到\texttt{foo\%E4\%BD\%A0\%E5\%A5\%BDbaz}。
 \end{description}
 
 \subsection{订阅服务配置节}
 \label{sec:subconf}
 
 订阅服务配置节的一般形式如下：
-\begin{verbatim}
+\begin{Verbatim}
 [subscriptions.foo]
 url = "https://sub.example.com/config.yaml?token=foo"
 prefix = "sub-"
@@ -180,7 +180,7 @@ url = "https://baz.example.com/sub.yaml?pw=bar"
 source = "流媒体"
 targets = [ "B站港澳台", "动画疯" ]
 allowed_keywords = [ "台湾" ]
-\end{verbatim}
+\end{Verbatim}
 请注意，\texttt{[subscriptions]}节可包含多份订阅服务配置，并以点分隔键的形式写出。
 
 下面是对各项配置的说明：
@@ -207,7 +207,7 @@ allowed_keywords = [ "台湾" ]
   可以有多对源节点组相同的映射（既可一对一，也可一对多）。
 \item[targets] 目的节点组的名称（即\emph{模板}中proxy-groups项的name键）。
   若其值为单个字符串，则效果与包含单个值的数组相同。
-  若其值或数组中元素的值为空字符串（\verb|""|），则表示其名称与source相同。
+  若其值或数组中元素的值为空字符串（\Verb|""|），则表示其名称与source相同。
 \item[allowed\_keywords（可选）] 此选项可指定一个包含关键词的数组。
   若指定，则在source指定的节点组中，只有与这些关键词匹配的节点（即\emph{YAML配置}中proxy-groups项的proxies键）才能被加入到targets指定的节点组中。
   若全局配置节中的denied\_key\-words配置也被指定，此选项的优先级高于它。
