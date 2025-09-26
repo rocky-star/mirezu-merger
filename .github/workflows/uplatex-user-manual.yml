@@ -31,7 +31,8 @@ jobs:
         with:
           packages: texlive texlive-lang-chinese texlive-lang-japanese
           version: 1.0
-          execute_install_scripts: true
+      - name: Run installation scripts of packages via APT
+        run: apt install texlive texlive-lang-chinese texlive-lang-japanese
       - name: Cache TeX fonts
         id: cache-fonts
         uses: actions/cache@v4
@@ -51,8 +52,8 @@ jobs:
           sudo curl -LO --output-dir $FONTS_DIR https://file.luxing.im/FZSSK.TTF
           sudo curl -LO --output-dir $FONTS_DIR https://file.luxing.im/FZXBSK.TTF
           sudo curl -LO --output-dir $FONTS_DIR https://file.luxing.im/FZXH1K.TTF
-          sudo curl -LO --output-dir $FONTS_DIR http://d.xiazaiziti.com/fonts/fangzhengfonts/FZY1K.TTF
-          sudo curl -LO --output-dir $FONTS_DIR http://d.xiazaiziti.com/fonts/fangzhengfonts/FZY3K.TTF
+          sudo curl -LO --output-dir $FONTS_DIR https://font.taofont.com/fonts/fangzhengfonts/FZY1K.TTF
+          sudo curl -LO --output-dir $FONTS_DIR https://font.taofont.com/fonts/fangzhengfonts/FZY3K.TTF
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
