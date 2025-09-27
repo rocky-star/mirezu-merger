@@ -34,7 +34,7 @@ BUILTIN_PROXY_NAMES: Final = frozenset([
     'DIRECT', 'REJECT', 'REJECT-DROP', 'PASS', 'COMPATIBLE'])
 
 logger = logging.getLogger()
-yaml = ruamel.yaml.YAML(typ='rt')
+yaml = ruamel.yaml.YAML(typ='safe')
 
 
 @final
@@ -184,6 +184,7 @@ def merge_subscription_proxy_groups(
                  and allowed_pattern.search(proxy_name) is None)
                 or (denied_pattern is not None
                     and denied_pattern.search(proxy_name) is not None)
+                or proxy_name in sub_proxy_groups
                 or proxy_name in BUILTIN_PROXY_NAMES):
                 logger.debug(
                     _('Ignoring node %(node)s specified in '
@@ -197,9 +198,10 @@ def merge_subscription_proxy_groups(
             mapping['targets'] = [mapping['targets']]
         for group_name in (gn or mapping['source'] for gn in mapping['targets']):
             logger.debug(_('Modifying node group %s'), group_name)
-            (template_proxy_groups[group_name]
-             .setdefault('proxies', [])
-             .extend(applied_proxy_names))
+            group_proxy_names = (
+                template_proxy_groups[group_name].setdefault('proxies', []))
+            group_proxy_names.extend(
+                n for n in applied_proxy_names if n not in group_proxy_names)
     logger.info(ngettext('Processed %d mapping for the subscription',
                          'Processed %d mappings for the subscription',
                          len(sub_config['mappings'])),
@@ -359,6 +361,7 @@ def main(argv: Sequence[str] | None = None) -> None:
 
     retrieve_and_apply_subscriptions(config, template)
     if 'providers_file' in config:
+        args.outdir.mkdir(exist_ok=True)
         providers_file_name = args.outdir / config['providers_file']
         logger.info(_('Writing the proxy-providers.yaml to %s'),
                     providers_file_name)
@@ -376,11 +379,12 @@ def main(argv: Sequence[str] | None = None) -> None:
         except OSError:
             logger.exception(_('Failed to read profile %s'), profile_file_name)
             sys.exit(EXIT_FAILURE)
-        output = apply_patch(cast(Patchable, cast(object, template)), profile)
+        output = apply_patch(cast(Patchable, cast(object, template)), profile or {})
 
         logger.info(_('Writing the corresponding output'))
         output_file_name = args.outdir / profile_file_name.name
         try:
+            args.outdir.mkdir(exist_ok=True)
             with open(output_file_name, 'w', encoding='utf_8') as output_file:
                 yaml.dump(output, output_file)
         except OSError:
