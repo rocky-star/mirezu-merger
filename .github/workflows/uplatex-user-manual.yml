@@ -40,7 +40,7 @@ jobs:
         with:
           path: /home/runner/texmf/fonts
           key: founder-ctex-fonts
-      - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
+      - if: ${{ steps.cache-fonts.outputs.cache-hit != 'true' }}
         name: Install fonts
         env:
           FONTS_DIR: /home/runner/texmf/fonts/truetype/founder/ctex
