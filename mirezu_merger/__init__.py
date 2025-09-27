@@ -50,6 +50,7 @@ class SubscriptionConfig(TypedDict):
     prefix: NotRequired[str]
     suffix: NotRequired[str]
     proxy_required: NotRequired[bool]
+    node_override: NotRequired[dict[str, dict[str, Any]]]
     mappings: list[SubscriptionMappingConfig]
 
 
@@ -86,6 +87,7 @@ ClashProxy = TypedDict(
     'ClashProxy',
     {
         'name': str,
+        'type': str,
     })
 ClashRoot = TypedDict(
     'ClashRoot',
@@ -119,6 +121,7 @@ def merge_subscription_proxies(
         else None)
     prefix = sub_config.get('prefix', '')
     suffix = sub_config.get('suffix', '')
+    node_override = sub_config.get('node_override', {})
     proxy_names: set[str] = set()
     for i, clash_proxy in enumerate(sub_root['proxies']):
         if (denied_pattern is not None
@@ -132,6 +135,11 @@ def merge_subscription_proxies(
                      {'n': i + 1, 'node': clash_proxy['name']})
         proxy_names.add(clash_proxy['name'])
         clash_proxy['name'] = prefix + clash_proxy['name'] + suffix
+        override = node_override.get(
+            clash_proxy['type'], node_override.get('', None))
+        if override is not None:
+            logger.debug(_('Applying the appropriate overriding'))
+            cast(dict[str, Any], cast(object, clash_proxy)).update(override)
         template['proxies'].append(clash_proxy)
     logger.info(ngettext('Merged %d node from the subscription',
                          'Merged %d nodes from the subscription',

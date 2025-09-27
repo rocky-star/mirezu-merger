@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mirezu Merger 0.1\n"
 "Report-Msgid-Bugs-To: https://github.com/rocky-star/mirezu-merger/issues\n"
-"POT-Creation-Date: 2025-09-26 16:43+0800\n"
-"PO-Revision-Date: 2025-09-26 16:49+0800\n"
+"POT-Creation-Date: 2025-09-28 00:29+0800\n"
+"PO-Revision-Date: 2025-09-28 00:32+0800\n"
 "Last-Translator: Rocky☆Star <rocky-star22@outlook.com>\n"
 "Language-Team: \n"
 "Language: zh_CN\n"
@@ -19,187 +19,191 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Poedit 3.7\n"
 
-#: mirezu_merger\__init__.py:127
+#: mirezu_merger\__init__.py:130
 #, python-format
 msgid "Ignoring node %(node)s from subscription %(sub)s"
 msgstr "正在忽略订阅 %(sub)s 的节点 %(node)s"
 
-#: mirezu_merger\__init__.py:131
+#: mirezu_merger\__init__.py:134
 #, python-format
 msgid "Merging node #%(n)d (%(node)s)"
 msgstr "正在合并第 %(n)d 个节点 (%(node)s)"
 
-#: mirezu_merger\__init__.py:136
+#: mirezu_merger\__init__.py:141
+msgid "Applying the appropriate overriding"
+msgstr "正在应用合适的覆写"
+
+#: mirezu_merger\__init__.py:144
 #, python-format
 msgid "Merged %d node from the subscription"
 msgid_plural "Merged %d nodes from the subscription"
 msgstr[0] "已从订阅合并 %d 个节点"
 
-#: mirezu_merger\__init__.py:158
+#: mirezu_merger\__init__.py:166
 #, python-format
 msgid "Processing mapping #%(n)d (%(from)r to %(to)r)"
 msgstr "正在处理第 %(n)d 对映射 (%(from)r 到 %(to)r)"
 
-#: mirezu_merger\__init__.py:173
+#: mirezu_merger\__init__.py:181
 #, python-format
 msgid ""
 "Node %(node)s specified in node group %(group)s is not in the configuration "
 "from the subscription %(sub)s"
 msgstr "节点组 %(group)s 中指定的节点 %(node)s 不在订阅 %(sub)s 的配置中"
 
-#: mirezu_merger\__init__.py:181
+#: mirezu_merger\__init__.py:189
 msgid "The configuration might be corrupted"
 msgstr "配置可能已损坏"
 
-#: mirezu_merger\__init__.py:189
+#: mirezu_merger\__init__.py:198
 #, python-format
 msgid "Ignoring node %(node)s specified in node group %(group)s"
 msgstr "正在忽略节点组 %(group)s 中指定的节点 %(node)s"
 
-#: mirezu_merger\__init__.py:193
+#: mirezu_merger\__init__.py:202
 #, python-format
 msgid "Node %s will be appended"
 msgstr "将追加节点 %s"
 
-#: mirezu_merger\__init__.py:199
+#: mirezu_merger\__init__.py:208
 #, python-format
 msgid "Modifying node group %s"
 msgstr "正在修改节点组 %s"
 
-#: mirezu_merger\__init__.py:203
+#: mirezu_merger\__init__.py:213
 #, python-format
 msgid "Processed %d mapping for the subscription"
 msgid_plural "Processed %d mappings for the subscription"
 msgstr[0] "已为订阅处理 %d 对映射"
 
-#: mirezu_merger\__init__.py:211
+#: mirezu_merger\__init__.py:221
 #, python-format
 msgid ""
 "These node groups in subscription %(sub)s has not been processed: %(groups)r"
 msgstr "尚未处理订阅 %(sub)s 中的这些节点组: %(groups)r"
 
-#: mirezu_merger\__init__.py:214
+#: mirezu_merger\__init__.py:224
 msgid "Please consider update your configuration"
 msgstr "请考虑更新您的程序配置"
 
-#: mirezu_merger\__init__.py:229
+#: mirezu_merger\__init__.py:239
 #, python-format
 msgid "Applied standard proxy %s"
 msgstr "已应用标准代理 %s"
 
-#: mirezu_merger\__init__.py:233
+#: mirezu_merger\__init__.py:243
 #, python-format
 msgid "Rewrote the URL to %s"
 msgstr "已重写 URL 到 %s"
 
-#: mirezu_merger\__init__.py:236
+#: mirezu_merger\__init__.py:246
 msgid "Applied the specified HTTP proxy"
 msgstr "已应用指定的 HTTP 代理"
 
-#: mirezu_merger\__init__.py:242
+#: mirezu_merger\__init__.py:252
 #, python-format
 msgid "Retrieving the configuration from subscription %s"
 msgstr "正在从订阅 %s 检索配置"
 
-#: mirezu_merger\__init__.py:253
+#: mirezu_merger\__init__.py:263
 #, python-format
 msgid "Failed to retrieve the configuration from subscription %s"
 msgstr "从订阅 %s 检索配置时出错"
 
-#: mirezu_merger\__init__.py:276
+#: mirezu_merger\__init__.py:286
 #, python-format
 msgid "The value type of key %(key)s in the patch (%(type)s) is unacceptable"
 msgstr "补丁中的键 %(key)s 的值类型 (%(type)s) 不可接受"
 
-#: mirezu_merger\__init__.py:279
+#: mirezu_merger\__init__.py:289
 #, python-format
 msgid "Supported value types are: %r"
 msgstr "支持的值类型有: %r"
 
-#: mirezu_merger\__init__.py:308
+#: mirezu_merger\__init__.py:318
 msgid "Merge YAML configuration files provided by subscription services."
 msgstr "合并由订阅服务提供的 YAML 配置文件。"
 
-#: mirezu_merger\__init__.py:311
+#: mirezu_merger\__init__.py:321
 msgid "the configuration file"
 msgstr "程序配置文件"
 
-#: mirezu_merger\__init__.py:312
+#: mirezu_merger\__init__.py:322
 msgid "the profile directory"
 msgstr "自定义配置目录"
 
-#: mirezu_merger\__init__.py:316
+#: mirezu_merger\__init__.py:326
 msgid "the output directory"
 msgstr "输出目录"
 
-#: mirezu_merger\__init__.py:319
+#: mirezu_merger\__init__.py:329
 msgid "the locale name of the translation to use"
 msgstr "要使用的翻译的区域设置名"
 
-#: mirezu_merger\__init__.py:323
+#: mirezu_merger\__init__.py:333
 msgid "increase the logging level, useful for debugging"
 msgstr "增加日志级别，对调试有用"
 
-#: mirezu_merger\__init__.py:333
+#: mirezu_merger\__init__.py:343
 #, python-format
 msgid "Loading the configuration from %s"
 msgstr "正在从 %s 加载程序配置"
 
-#: mirezu_merger\__init__.py:339
+#: mirezu_merger\__init__.py:349
 #, python-format
 msgid "Failed to read the configuration from %s"
 msgstr "从 %s 读取程序配置时出错"
 
-#: mirezu_merger\__init__.py:343
+#: mirezu_merger\__init__.py:353
 #, python-format
 msgid "Failed to parse the configuration from %s"
 msgstr "从 %s 解析程序配置时出错"
 
-#: mirezu_merger\__init__.py:346
+#: mirezu_merger\__init__.py:356
 #, python-format
 msgid "Successfully loaded the configuration from %s"
 msgstr "成功从 %s 加载程序配置"
 
-#: mirezu_merger\__init__.py:349
+#: mirezu_merger\__init__.py:359
 #, python-format
 msgid "Loading the template from %s"
 msgstr "正在从 %s 加载模板"
 
-#: mirezu_merger\__init__.py:354
+#: mirezu_merger\__init__.py:364
 #, python-format
 msgid "Failed to read the template from %s"
 msgstr "从 %s 读取模板时出错"
 
-#: mirezu_merger\__init__.py:357
+#: mirezu_merger\__init__.py:367
 #, python-format
 msgid "Successfully loaded the template from %s"
 msgstr "成功从 %s 加载模板"
 
-#: mirezu_merger\__init__.py:363
+#: mirezu_merger\__init__.py:374
 #, python-format
 msgid "Writing the proxy-providers.yaml to %s"
 msgstr "正在向 %s 写入 proxy-providers.yaml"
 
-#: mirezu_merger\__init__.py:369
+#: mirezu_merger\__init__.py:380
 #, python-format
 msgid "Failed to write the proxy-providers.yaml to %s"
 msgstr "写入 proxy-providers.yaml 到 %s 时出错"
 
-#: mirezu_merger\__init__.py:373
+#: mirezu_merger\__init__.py:384
 #, python-format
 msgid "Applying the patch %s"
 msgstr "正在应用补丁 %s"
 
-#: mirezu_merger\__init__.py:377
+#: mirezu_merger\__init__.py:388
 #, python-format
 msgid "Failed to read profile %s"
 msgstr "从 %s 读取自定义配置时出错"
 
-#: mirezu_merger\__init__.py:381
+#: mirezu_merger\__init__.py:392
 msgid "Writing the corresponding output"
 msgstr "正在写入到对应输出"
 
-#: mirezu_merger\__init__.py:387
+#: mirezu_merger\__init__.py:399
 #, python-format
 msgid "Failed to write the output of patch %s"
 msgstr "写入补丁 %s 的输出时出错"
