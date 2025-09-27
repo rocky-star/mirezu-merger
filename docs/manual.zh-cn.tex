@@ -168,6 +168,7 @@ url = "https://sub.example.com/config.yaml?token=foo"
 prefix = "sub-"
 suffix = "-foo"
 proxy_required = True
+node_override = { trojan = { udp = true } }
 mappings = [
   { source = "自动选择", targets = "" },
   { source = "ChatGPT", targets = [ "", "Anthropic" ] },
@@ -190,6 +191,11 @@ allowed_keywords = [ "台湾" ]
   最终形成的节点名为“prefix + 原始节点名 + suffix”。
   例如，若prefix为\texttt{sub-}，suffix为 \texttt{-foo}，而节点名为“香港1”，则最终形成的节点名则为\texttt{sub-香港1-foo}。
 \item[proxy\_required（可选）] 设置此项为true则将使\productname 在请求此订阅服务的配置文件时启用于代理配置节配置的网络代理。
+\item[node\_override（可选）] 此项可用于覆写节点的某些设置，它的结构为嵌套表。
+  外层表的键指定节点的类型
+  若其为空，则代表指定的覆写适用于所有类型的节点。
+  内层表则包含要被覆写的值。
+  例如，若指定此项的值为 \Verb|{ trojan = { udp = true } }|，则代表启用所有采用Trojan协议的节点的UDP支持。
 \item[mappings] 包含各项节点组映射配置，有关映射配置的内容将在下一节讲述。
   请注意，示例配置同时展示了映射配置的两种形式：\emph{静态数组嵌套内联表}以及\emph{表数组}。
   若您的映射配置较简单、简短，可采用静态数组嵌套内联表的形式（即\texttt{mappings = [ \ldots{} ]}）。
@@ -228,7 +234,7 @@ allowed_keywords = [ "台湾" ]
 \item 对\emph{顶层}的YAML关联数组键，\emph{自定义配置}中键的值会覆盖掉\emph{模板}中对应键的值。
   如果\emph{模板}中不存在对应键，一个新关联数组会被插入，然后\emph{自定义配置}中的值会被合入。
 \item 对\emph{顶层}的YAML数组键，\emph{自定义配置}中键的元素会被追加到\emph{模板}中对应键的数组中。
-  如果\emph{模板}中不存在对应键，一个新数组会被插入，然后\emph{自定义配置}中的值会被追加上去。
+  如果\emph{模板}中不存在对应键，一个新数组会被插入，然后\emph{自定义配置}中的值会被追加。
 \end{itemize}
 \productname 当前不处理其它的顶层键类型，也不递归地处理嵌套键。
 
@@ -241,7 +247,6 @@ car:
   color: green
 
 fruits:
-- apple
 - banana
 \end{SaveVerbatim}
 \begin{SaveVerbatim}{ExampleProfile}
@@ -261,28 +266,27 @@ car:
   glass_color: blue
 
 fruits:
-- apple
 - banana
 - banana
 - grape
 - orange
 \end{SaveVerbatim}
 \fbox{
-  \begin{minipage}[t][46ex][t]{0.29\linewidth}
+  \begin{minipage}[t][42ex][t]{0.29\linewidth}
     \smallskip
     模板：
     \UseVerbatim{ExampleTemplate}
   \end{minipage}
 }
 \hspace{\fill}\fbox{
-  \begin{minipage}[t][46ex][t]{0.29\linewidth}
+  \begin{minipage}[t][42ex][t]{0.29\linewidth}
     \smallskip
     自定义配置：
     \UseVerbatim{ExampleProfile}
   \end{minipage}
 }
 \hspace{\fill}\fbox{
-  \begin{minipage}[t][46ex][t]{0.29\linewidth}
+  \begin{minipage}[t][42ex][t]{0.29\linewidth}
     \smallskip
     输出结果：
     \UseVerbatim{ExampleOutput}
@@ -291,7 +295,7 @@ fruits:
 
 \smallskip
 请注意最终输出中的car键被更新了，而fruits键则被追加了元素。
-此追加过程是不进行去重的。
+追加是不去重的。
 
 \end{document}
 %%% Local Variables:
