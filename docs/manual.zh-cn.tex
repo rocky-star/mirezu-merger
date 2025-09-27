@@ -240,20 +240,19 @@ allowed_keywords = [ "台湾" ]
 
 下面展示了一种可能的\emph{模板}、\emph{自定义配置}和最终的输出：
 
-\noindent\medskip
+\noindent
 \begin{SaveVerbatim}{ExampleTemplate}
 car:
   max_speed: 80
   color: green
-
 fruits:
+- apple
 - banana
 \end{SaveVerbatim}
 \begin{SaveVerbatim}{ExampleProfile}
 car:
   max_speed: 120
   glass_color: blue
-
 fruits:
 - banana
 - grape
@@ -264,36 +263,39 @@ car:
   max_speed: 120
   color: green
   glass_color: blue
-
 fruits:
+- apple
 - banana
 - banana
 - grape
 - orange
 \end{SaveVerbatim}
 \fbox{
-  \begin{minipage}[t][42ex][t]{0.29\linewidth}
+  \begin{minipage}[t][41ex][t]{0.29\linewidth}
     \smallskip
     模板：
+    \vspace{-2ex}
     \UseVerbatim{ExampleTemplate}
   \end{minipage}
 }
 \hspace{\fill}\fbox{
-  \begin{minipage}[t][42ex][t]{0.29\linewidth}
+  \begin{minipage}[t][41ex][t]{0.29\linewidth}
     \smallskip
     自定义配置：
+    \vspace{-2ex}
     \UseVerbatim{ExampleProfile}
   \end{minipage}
 }
 \hspace{\fill}\fbox{
-  \begin{minipage}[t][42ex][t]{0.29\linewidth}
+  \begin{minipage}[t][41ex][t]{0.29\linewidth}
     \smallskip
     输出结果：
+    \vspace{-2ex}
     \UseVerbatim{ExampleOutput}
   \end{minipage}
 }
 
-\smallskip
+\bigskip
 请注意最终输出中的car键被更新了，而fruits键则被追加了元素。
 追加是不去重的。
 
