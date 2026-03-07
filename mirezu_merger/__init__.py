@@ -51,6 +51,7 @@ class SubscriptionConfig(TypedDict):
     suffix: NotRequired[str]
     proxy_required: NotRequired[bool]
     node_override: NotRequired[dict[str, dict[str, Any]]]
+    ignore: NotRequired[bool]
     mappings: list[SubscriptionMappingConfig]
 
 
@@ -261,8 +262,13 @@ def retrieve_and_apply_subscriptions(config: Config, template: ClashRoot) -> Non
                 sub_root = cast(ClashRoot, cast(object, yaml.load(response)))
         except urllib.error.URLError:
             msg = _('Failed to retrieve the configuration from subscription %s')
-            logger.exception(msg, sub_name)
-            continue
+            if sub_config.get('ignore', False):
+                logger.error(msg, sub_name)
+                logger.error(_('Ignoring subscription %s due to ignore flag'), sub_name)
+                continue
+            else:
+                logger.exception(msg, sub_name)
+                continue
 
         prefix = sub_config.get('prefix', '')
         suffix = sub_config.get('suffix', '')

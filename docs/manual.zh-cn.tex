@@ -168,6 +168,7 @@ url = "https://sub.example.com/config.yaml?token=foo"
 prefix = "sub-"
 suffix = "-foo"
 proxy_required = True
+ignore = True
 node_override = { trojan = { udp = true } }
 mappings = [
   { source = "自动选择", targets = "" },
@@ -191,6 +192,8 @@ allowed_keywords = [ "台湾" ]
   最终形成的节点名为“prefix + 原始节点名 + suffix”。
   例如，若prefix为\texttt{sub-}，suffix为 \texttt{-foo}，而节点名为“香港1”，则最终形成的节点名则为\texttt{sub-香港1-foo}。
 \item[proxy\_required（可选）] 设置此项为true则将使\productname 在请求此订阅服务的配置文件时启用于代理配置节配置的网络代理。
+\item[ignore（可选）] 若将此选项设为true，则当此订阅的配置更新失败时，\productname 不会终止运行，而会输出错误级别的日志并继续处理其它订阅。
+这在某些订阅服务临时不可用，但您仍希望使用其它订阅时很有用。
 \item[node\_override（可选）] 此项可用于覆写节点的某些设置，它的结构为嵌套表。
   外层表的键指定节点的类型
   若其为空，则代表指定的覆写适用于所有类型的节点。
@@ -244,7 +247,6 @@ allowed_keywords = [ "台湾" ]
 \begin{SaveVerbatim}{ExampleTemplate}
 car:
   max_speed: 80
-  color: green
 fruits:
 - apple
 - banana
@@ -256,22 +258,19 @@ car:
 fruits:
 - banana
 - grape
-- orange
 \end{SaveVerbatim}
 \begin{SaveVerbatim}{ExampleOutput}
 car:
   max_speed: 120
-  color: green
   glass_color: blue
 fruits:
 - apple
 - banana
 - banana
 - grape
-- orange
 \end{SaveVerbatim}
 \fbox{
-  \begin{minipage}[t][41ex][t]{0.29\linewidth}
+  \begin{minipage}[t][33ex][t]{0.29\linewidth}
     \smallskip
     模板：
     \vspace{-2ex}
@@ -279,7 +278,7 @@ fruits:
   \end{minipage}
 }
 \hspace{\fill}\fbox{
-  \begin{minipage}[t][41ex][t]{0.29\linewidth}
+  \begin{minipage}[t][33ex][t]{0.29\linewidth}
     \smallskip
     自定义配置：
     \vspace{-2ex}
@@ -287,7 +286,7 @@ fruits:
   \end{minipage}
 }
 \hspace{\fill}\fbox{
-  \begin{minipage}[t][41ex][t]{0.29\linewidth}
+  \begin{minipage}[t][33ex][t]{0.29\linewidth}
     \smallskip
     输出结果：
     \vspace{-2ex}
