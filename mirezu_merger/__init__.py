@@ -260,6 +260,15 @@ def retrieve_and_apply_subscriptions(config: Config, template: ClashRoot) -> Non
             with urllib.request.urlopen(request) as response:
                 # FIXME: Validation of the configuration
                 sub_root = cast(ClashRoot, cast(object, yaml.load(response)))
+                if sub_root is None:
+                    msg = _('The configuration retrieved from subscription %s is empty or invalid')
+                    if sub_config.get('ignore', False):
+                        logger.error(msg, sub_name)
+                        logger.error(_('Ignoring subscription %s due to ignore flag'), sub_name)
+                        continue
+                    else:
+                        logger.critical(msg, sub_name)
+                        sys.exit(1)
         except urllib.error.URLError:
             msg = _('Failed to retrieve the configuration from subscription %s')
             if sub_config.get('ignore', False):
