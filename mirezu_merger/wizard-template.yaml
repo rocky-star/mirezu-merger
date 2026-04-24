@@ -1,0 +1,30 @@
+mixed-port: 7890
+allow-lan: false
+mode: rule
+log-level: info
+ipv6: true
+dns:
+  enable: true
+  ipv6: true
+  enhanced-mode: fake-ip
+profile:
+  store-selected: true
+proxies: []
+proxy-groups:
+  - name: Proxy
+    type: select
+    proxies: []
+  - name: Auto
+    type: url-test
+    url: https://www.gstatic.com/generate_204
+    interval: 300
+    proxies: []
+  - name: Fallback
+    type: fallback
+    url: https://www.gstatic.com/generate_204
+    interval: 300
+    proxies: []
+  - name: All Nodes
+    type: select
+    proxies: []
+rules: []

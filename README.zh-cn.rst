@@ -8,8 +8,12 @@
 简介
 ----
 
-Mirezu Merger 是一种能帮助您合并由不同订阅提供的 YAML 配置文件的 Python 脚本。
-例如，假设您订阅了两个或更多订阅服务，而这些订阅服务所提供的 YAML 配置文件各自包含了不同的节点、节点组和路由规则等，Mirezu Merger 能将这些配置文件合并到一起，并为不同种类的设备（电脑、手机、路由器等）提供不同的变体。
+Mirezu Merger 是一个用于合并由不同订阅提供的 Clash/Mihomo 风格 YAML
+配置文件的 Python 命令行工具。项目目前提供两种工作流：对大多数用户更友好的
+``wizard`` 向导模式，以及继续保留给高级用户的手动 ``build`` 模式。前者让您只需
+提供订阅链接、选择输出目标和策略预设即可生成可直接导入的配置文件；后者则允许
+您继续维护自己的 YAML 模板、TOML 配置和 profile patch。两种模式最终都会复用
+同一套合并流程，并为不同种类的设备（电脑、手机、路由器等）生成不同的变体。
 
 
 安装
@@ -51,7 +55,46 @@ Mirezu Merger 是一种能帮助您合并由不同订阅提供的 YAML 配置文
 用法
 ----
 
-请阅读\ `用户手册 <https://rocky-star.github.io/mirezu-merger/manual.zh-cn.pdf>`__\ 以了解用法。
+向导模式
+^^^^^^^^
+
+如果您只是想把多条订阅快速整理成可直接导入的配置文件，推荐使用 ``wizard``
+命令。向导模式会引导您录入订阅链接，选择输出目标（``desktop``、``mobile``、
+``router``），选择策略预设（``general``、``streaming``、``ai``、
+``minimal``），再配置抓取订阅时所需的少量网络选项并生成结果。
+
+最简单的用法如下::
+
+  mirezu-merger wizard
+
+您也可以直接通过命令行参数传入订阅链接，或从文本文件中批量读取::
+
+  mirezu-merger wizard --subscription https://example.com/sub-a.yaml --subscription https://example.com/sub-b.yaml
+  mirezu-merger wizard --subscription-file subscriptions.txt
+
+默认情况下，向导会把结果写入 ``output/``，其中包括 ``proxy-providers.yaml``、
+所选目标对应的输出文件、``wizard.session.toml``，以及导出的 ``generated/``
+内部资产，方便您后续复用或检查。
+
+如果当前目录下存在 ``wizard.config.toml`` 且其中配置了 ``[analysis.ai]``，
+向导还会额外询问是否启用 AI 节点分析。可参考仓库中的
+``wizard.config.toml.example``。
+
+如果您想基于上一次保存的向导会话重新生成，可运行::
+
+  mirezu-merger wizard --resume
+
+若会话文件不在默认位置，或您希望将恢复后的输出写到新的目录，请显式指定
+``--session-file`` 和 ``-o``。
+
+手动模式
+^^^^^^^^
+
+如果您打算自己维护 YAML 模板、TOML 配置和 profile patch，请直接阅读\
+ `用户手册 <https://rocky-star.github.io/mirezu-merger/manual.zh-cn.pdf>`__\ 。
+README 不重复展开这一套高级工作流。对应命令入口为::
+
+  mirezu-merger build config.toml profiles
 
 
 许可证

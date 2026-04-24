@@ -1,0 +1,66 @@
+target_order:
+  - desktop
+  - mobile
+  - router
+strategy_order:
+  - general
+  - streaming
+  - ai
+  - minimal
+strategies:
+  general:
+    rules:
+      - IP-CIDR,127.0.0.0/8,DIRECT,no-resolve
+      - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
+      - IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
+      - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
+      - MATCH,Proxy
+  streaming:
+    proxy-groups:
+      - name: Streaming
+        type: select
+        proxies: []
+    rules:
+      - DOMAIN-SUFFIX,netflix.com,Streaming
+      - DOMAIN-SUFFIX,youtube.com,Streaming
+      - DOMAIN-SUFFIX,disneyplus.com,Streaming
+      - MATCH,Proxy
+  ai:
+    proxy-groups:
+      - name: AI
+        type: select
+        proxies: []
+    rules:
+      - DOMAIN-SUFFIX,openai.com,AI
+      - DOMAIN-SUFFIX,chatgpt.com,AI
+      - DOMAIN-SUFFIX,anthropic.com,AI
+      - DOMAIN-SUFFIX,claude.ai,AI
+      - MATCH,Proxy
+  minimal:
+    rules:
+      - MATCH,Proxy
+platforms:
+  desktop:
+    profile:
+      store-selected: true
+      store-fake-ip: true
+    sniffer:
+      enable: true
+  mobile:
+    profile:
+      store-selected: true
+      store-fake-ip: false
+    dns:
+      enable: true
+      ipv6: false
+      enhanced-mode: fake-ip
+  router:
+    dns:
+      enable: true
+      ipv6: false
+      enhanced-mode: redir-host
+    tun:
+      enable: true
+      stack: system
+    profile:
+      store-selected: false

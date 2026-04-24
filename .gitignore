@@ -214,3 +214,14 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# tmp files
+.tmpdist/
+
+# output
+output/
+
+# wizard private companion files
+*.private.toml
+
+wizard.config.toml

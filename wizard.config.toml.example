@@ -1,0 +1,8 @@
+# Copy this file to wizard.config.toml and replace the placeholders below.
+# When AI config is available, the wizard will ask whether to enable AI
+# analysis and whether to use assisted or full analysis mode.
+
+[analysis.ai]
+base_url = "https://api.openai.com/v1"
+api_key = "sk-..."
+model = "gpt-4.1-mini"
