@@ -35,6 +35,7 @@ BUILTIN_PROXY_NAMES: Final = frozenset([
 
 logger = logging.getLogger()
 yaml = ruamel.yaml.YAML(typ='safe')
+yaml.width = float('Infinity')
 
 
 @final
