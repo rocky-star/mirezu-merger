@@ -18,13 +18,12 @@ import re
 import string
 import sys
 import tomllib
-import urllib.error
 import urllib.parse
-import urllib.request
 from collections.abc import Collection, Container, Sequence
 from pathlib import Path
 from typing import Any, Final, Literal, TypedDict, cast, final
 
+import requests
 import ruamel.yaml
 from typing_extensions import NotRequired, assert_never, override
 
@@ -229,24 +228,27 @@ def merge_subscription_proxy_groups(
 def make_request(
         config: Config, url: str,
         *,
-        proxy_required: bool = False) -> urllib.request.Request:
+        proxy_required: bool = False) -> requests.Response:
+    full_url = url
     user_agent = config.get('user_agent', USER_AGENT)
-    request = urllib.request.Request(url)
-    request.add_header('User-Agent', user_agent)
+    proxies = {}
     if proxy_required and (proxy_config := config.get('proxy')) is not None:
         match proxy_config['type']:
             case 'standard':
-                request.set_proxy(
-                    proxy_config['host'], proxy_config.get('protocol', 'http'))
-                logger.info(_('Applied standard proxy %s'), proxy_config['host'])
+                proxy_url = (
+                    proxy_config.get('protocol', 'http')
+                    + '://'
+                    + proxy_config['host'])
+                proxies.update({'http': proxy_url, 'https': proxy_url})
+                logger.info(_('Applied standard proxy %s'), proxy_url)
             case 'url':
-                request.full_url = URLQuotingFormatter().format(
+                full_url = URLQuotingFormatter().format(
                     proxy_config['url'], url=url, ua=user_agent)
-                logger.info(_('Rewrote the URL to %s'), request.full_url)
+                logger.info(_('Rewrote the URL to %s'), full_url)
             case proxy_type:
                 assert_never(proxy_type)
         logger.info(_('Applied the specified HTTP proxy'))
-    return request
+    return requests.get(full_url, headers={'User-Agent': user_agent}, proxies=proxies)
 
 
 def retrieve_and_apply_subscriptions(config: Config, template: ClashRoot) -> None:
@@ -254,13 +256,13 @@ def retrieve_and_apply_subscriptions(config: Config, template: ClashRoot) -> Non
         logger.info(_('Retrieving the configuration from subscription %s'),
                     sub_name)
 
-        request = make_request(
+        response = make_request(
             config, sub_config['url'],
             proxy_required=sub_config.get('proxy_required', False))
         try:
-            with urllib.request.urlopen(request) as response:
+            with response:
                 # FIXME: Validation of the configuration
-                sub_root = cast(ClashRoot, cast(object, yaml.load(response)))
+                sub_root = cast(ClashRoot, cast(object, yaml.load(response.content)))
                 if sub_root is None:
                     msg = _('The configuration retrieved from subscription %s is empty or invalid')
                     if sub_config.get('ignore', False):
@@ -270,7 +272,7 @@ def retrieve_and_apply_subscriptions(config: Config, template: ClashRoot) -> Non
                     else:
                         logger.critical(msg, sub_name)
                         sys.exit(1)
-        except urllib.error.URLError:
+        except requests.RequestException:
             msg = _('Failed to retrieve the configuration from subscription %s')
             if sub_config.get('ignore', False):
                 logger.error(msg, sub_name)
