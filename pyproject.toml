@@ -12,6 +12,7 @@ dynamic = [ "version" ]
 dependencies = [
   "ruamel.yaml",
   "typing-extensions >= 4.15, < 5",
+  "requests",
 ]
 requires-python = ">= 3.10"
 authors = [ { name = "Rocky☆Star", email = "rocky-star22@outlook.com" } ]
