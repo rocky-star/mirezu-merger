@@ -256,10 +256,10 @@ def retrieve_and_apply_subscriptions(config: Config, template: ClashRoot) -> Non
         logger.info(_('Retrieving the configuration from subscription %s'),
                     sub_name)
 
-        response = make_request(
-            config, sub_config['url'],
-            proxy_required=sub_config.get('proxy_required', False))
         try:
+            response = make_request(
+                config, sub_config['url'],
+                proxy_required=sub_config.get('proxy_required', False))
             with response:
                 # FIXME: Validation of the configuration
                 sub_root = cast(ClashRoot, cast(object, yaml.load(response.content)))
